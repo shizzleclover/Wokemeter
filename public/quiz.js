@@ -60,13 +60,12 @@ function render() {
   next.textContent = current === selectedQuestions.length - 1 ? "Analyze me →" : "Continue →";
 
   let typeLabel = "CHOOSE ONE";
-  if (q.type === "essay") typeLabel = "OPEN ENDED";
   if (q.type === "rank") typeLabel = "RANKING";
 
   view.innerHTML = `
     <div class="question-category">${escapeHtml(q.category)} · ${typeLabel}</div>
     <h1>${escapeHtml(q.text)}</h1>
-    ${q.type === "choice" ? renderChoices(q, saved) : (q.type === "rank" ? renderRank(q, saved) : renderEssay(q, saved))}
+    ${q.type === "choice" ? renderChoices(q, saved) : renderRank(q, saved)}
   `;
 
   if (q.type === "rank") {
@@ -134,22 +133,33 @@ function render() {
 
   view.querySelectorAll("input[name=answer]").forEach(input => {
     input.addEventListener("change", () => {
-      answers.set(q.id, { question: q.text, type: q.type, version: q.version, answer: input.value }); saveProgress();
+      const exp = view.querySelector("#explanation")?.value || "";
+      const ansStr = exp ? `${input.value}\n\nExplanation: ${exp}` : input.value;
+      answers.set(q.id, { question: q.text, type: q.type, version: q.version, choice: input.value, explanation: exp, answer: ansStr }); saveProgress();
       updateNextState();
-      setTimeout(() => {
-        if (!next.disabled) next.click();
-      }, 350);
+      
+      // Auto-advance if they haven't typed an explanation yet
+      if (!exp) {
+        setTimeout(() => {
+          if (!next.disabled) next.click();
+        }, 350);
+      }
+    });
+  });
     });
   });
 
-  const textarea = view.querySelector("textarea");
+  const textarea = view.querySelector("#explanation");
   if (textarea) {
+    if (saved?.explanation) textarea.value = saved.explanation;
     textarea.addEventListener("input", () => {
-      answers.set(q.id, { question: q.text, type: q.type, version: q.version, answer: textarea.value }); saveProgress();
-      updateNextState();
+      const choice = view.querySelector("input[name=answer]:checked")?.value || "";
+      const ansStr = textarea.value ? `${choice}\n\nExplanation: ${textarea.value}` : choice;
+      if (choice) {
+        answers.set(q.id, { question: q.text, type: q.type, version: q.version, choice: choice, explanation: textarea.value, answer: ansStr }); saveProgress();
+      }
     });
   }
-
   updateNextState();
 }
 
@@ -158,12 +168,21 @@ function renderChoices(q, saved) {
     <div class="options">
       ${q.options.map((option, index) => `
         <label class="option">
-          <input type="radio" name="answer" value="${escapeAttr(option)}" ${saved?.answer === option ? "checked" : ""}>
+          <input type="radio" name="answer" value="${escapeAttr(option)}" ${saved?.choice === option || saved?.answer === option ? "checked" : ""}>
           <span class="radio"></span>
           <span>${escapeHtml(option)}</span>
           <kbd>${index + 1}</kbd>
         </label>
       `).join("")}
+    </div>
+    <div class="essay-wrap" style="margin-top: 24px;">
+      <textarea id="explanation" maxlength="3000" placeholder="Optional: Explain your reasoning..."></textarea>
+      <div class="essay-meta">
+        <span style="color: var(--muted); font-size: 13px;">Adding a quick explanation gives the AI much better data to roast you.</span>
+      </div>
+    </div>
+  `;
+}
     </div>
   `;
 }
@@ -183,30 +202,12 @@ function renderRank(q, saved) {
   `;
 }
 
-function renderEssay(q, saved) {
-  return `
-    <div class="essay-wrap">
-      <textarea id="essay" maxlength="3000" placeholder="${escapeAttr(q.placeholder || "Explain what you actually think...")}">${escapeHtml(saved?.answer || "")}</textarea>
-      <div class="essay-meta">
-        <span id="char-warning">Minimum 20 characters required.</span>
-        <span id="char-count">${(saved?.answer || "").length}/3000</span>
-      </div>
-    </div>
-  `;
-}
 
 function updateNextState() {
   const q = selectedQuestions[current];
-  const answer = answers.get(q.id)?.answer?.trim() || "";
-  
-  if (q.type === "essay") {
-    const isLongEnough = answer.length >= 20;
-    next.disabled = !isLongEnough;
-    const warning = view.querySelector("#char-warning");
-    if (warning) {
-      warning.style.color = isLongEnough ? "var(--muted)" : "var(--accent)";
-      warning.style.fontWeight = isLongEnough ? "500" : "700";
-    }
+  next.disabled = !answers.has(q.id);
+  next.style.display = "";
+}
   } else {
     next.disabled = !answers.has(q.id);
   }

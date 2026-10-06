@@ -25,7 +25,8 @@ window.QUESTIONS = [
   },
   {
     id: "abortion_punishment",
-    type: "essay",
+    type: "choice",
+    options: ["Strongly agree", "Agree", "Somewhat agree", "Unsure", "Somewhat disagree", "Disagree", "Strongly disagree"],
     version: "1.0",
     category: "Abortion",
     text: "If you believe abortion is morally wrong, should the woman who gets one face criminal punishment? Explain why or why not.",
@@ -49,7 +50,8 @@ window.QUESTIONS = [
   },
   {
     id: "self_defense",
-    type: "essay",
+    type: "choice",
+    options: ["Strongly agree", "Agree", "Somewhat agree", "Unsure", "Somewhat disagree", "Disagree", "Strongly disagree"],
     version: "1.0",
     category: "Murder",
     text: "Someone breaks into your home at night and you reasonably believe they are about to kill your family. You have the opportunity to kill them first. Is killing them morally justified? Explain.",
@@ -73,7 +75,8 @@ window.QUESTIONS = [
   },
   {
     id: "false_accusation",
-    type: "essay",
+    type: "choice",
+    options: ["Strongly agree", "Agree", "Somewhat agree", "Unsure", "Somewhat disagree", "Disagree", "Strongly disagree"],
     version: "1.0",
     category: "Sexual Ethics",
     text: "Should someone who knowingly makes a deliberately false rape accusation face serious criminal punishment? Explain what you think is fair.",
@@ -97,7 +100,8 @@ window.QUESTIONS = [
   },
   {
     id: "speech_personal",
-    type: "essay",
+    type: "choice",
+    options: ["Strongly agree", "Agree", "Somewhat agree", "Unsure", "Somewhat disagree", "Disagree", "Strongly disagree"],
     version: "1.0",
     category: "Free Speech",
     text: "What principle should determine when offensive speech crosses the line from something society should tolerate into something that should have consequences?",
@@ -121,7 +125,8 @@ window.QUESTIONS = [
   },
   {
     id: "religion_essay",
-    type: "essay",
+    type: "choice",
+    options: ["Strongly agree", "Agree", "Somewhat agree", "Unsure", "Somewhat disagree", "Disagree", "Strongly disagree"],
     version: "1.0",
     category: "Religion",
     text: "Can a society respect religious freedom while still restricting religious practices that it considers harmful? Explain where you would draw the line.",
@@ -145,7 +150,8 @@ window.QUESTIONS = [
   },
   {
     id: "ethnic_priority",
-    type: "essay",
+    type: "choice",
+    options: ["Strongly agree", "Agree", "Somewhat agree", "Unsure", "Somewhat disagree", "Disagree", "Strongly disagree"],
     version: "1.0",
     category: "Nigeria",
     text: "If a scarce opportunity can go to one equally qualified Nigerian from your ethnic group or another equally qualified Nigerian from a different ethnic group, is it ever morally acceptable to favor your own group? Explain.",
@@ -169,7 +175,8 @@ window.QUESTIONS = [
   },
   {
     id: "gender_roles",
-    type: "essay",
+    type: "choice",
+    options: ["Strongly agree", "Agree", "Somewhat agree", "Unsure", "Somewhat disagree", "Disagree", "Strongly disagree"],
     version: "1.0",
     category: "Gender",
     text: "Do you think men and women naturally tend to have different interests or roles? If yes, how much of that difference comes from biology versus culture?",
@@ -185,7 +192,8 @@ window.QUESTIONS = [
   },
   {
     id: "wealth_limit",
-    type: "essay",
+    type: "choice",
+    options: ["Strongly agree", "Agree", "Somewhat agree", "Unsure", "Somewhat disagree", "Disagree", "Strongly disagree"],
     version: "1.0",
     category: "Money",
     text: "Is there a point at which one person can have so much wealth that society is justified in taking more of it through taxation? Explain.",
@@ -201,7 +209,8 @@ window.QUESTIONS = [
   },
   {
     id: "immigration_essay",
-    type: "essay",
+    type: "choice",
+    options: ["Strongly agree", "Agree", "Somewhat agree", "Unsure", "Somewhat disagree", "Disagree", "Strongly disagree"],
     version: "1.0",
     category: "Immigration",
     text: "What do you think a country owes to people who want to immigrate to it, if anything?",
@@ -217,7 +226,8 @@ window.QUESTIONS = [
   },
   {
     id: "drugs_paternalism",
-    type: "essay",
+    type: "choice",
+    options: ["Strongly agree", "Agree", "Somewhat agree", "Unsure", "Somewhat disagree", "Disagree", "Strongly disagree"],
     version: "1.0",
     category: "Drugs",
     text: "When, if ever, should the government protect adults from their own harmful choices?",
@@ -241,7 +251,8 @@ window.QUESTIONS = [
   },
   {
     id: "personal_principle",
-    type: "essay",
+    type: "choice",
+    options: ["Strongly agree", "Agree", "Somewhat agree", "Unsure", "Somewhat disagree", "Disagree", "Strongly disagree"],
     version: "1.0",
     category: "Meta",
     text: "What's one belief you hold that you think most people would judge you for? Explain why you hold it.",
@@ -259,7 +270,8 @@ window.QUESTIONS.push(
   },
   {
     id: "cancel_culture_impact",
-    type: "essay",
+    type: "choice",
+    options: ["Strongly agree", "Agree", "Somewhat agree", "Unsure", "Somewhat disagree", "Disagree", "Strongly disagree"],
     version: "1.0",
     category: "Culture",
     text: "Does 'cancel culture' hold people accountable, or does it create a toxic environment of fear? Explain."
