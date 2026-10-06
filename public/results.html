@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Wokeometer Result</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main class="results-shell">
+    <header class="quiz-header">
+      <a class="wordmark" href="/">WOKEOMETER</a>
+      <span>YOUR RESULT</span>
+    </header>
+
+    <section id="loading" class="loading">
+      <div class="spinner"></div>
+      <p>Reading between the lines...</p>
+      <small>We're looking at the pattern, not just individual answers.</small>
+    </section>
+
+    <section id="result" class="result hidden"></section>
+
+    <section id="error" class="error-box hidden"></section>
+  </main>
+
+  <script src="/results.js"></script>
+</body>
+</html>

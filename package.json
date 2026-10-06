@@ -1,0 +1,19 @@
+{
+  "name": "wokeometer",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Wokeometer — an AI-powered controversial opinion quiz.",
+  "scripts": {
+    "start": "node --watch --env-file=.env server.js",
+    "dev": "node --watch --env-file=.env server.js"
+  },
+  "dependencies": {
+    "@resvg/resvg-js": "^2.6.2",
+    "canvas": "^3.2.3",
+    "mongodb": "^7.7.0",
+    "satori": "^0.35.0"
+  },
+  "allowScripts": {
+    "canvas": "true"
+  }
+}

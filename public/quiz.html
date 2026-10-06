@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wokeometer — Quiz</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main class="quiz-shell">
+    <header class="quiz-header">
+      <a class="wordmark" href="/">WOKEOMETER</a>
+      <span id="counter">01 / 20</span>
+    </header>
+
+    <div class="progress-track">
+      <div id="progress"></div>
+    </div>
+
+    <section id="question-view" class="question-view"></section>
+
+    <footer class="quiz-footer">
+      <button id="back" class="button ghost" type="button">← Back</button>
+      <button id="next" class="button primary" type="button">Continue →</button>
+    </footer>
+  </main>
+
+  <script src="/questions.js"></script>
+  <script src="/quiz.js"></script>
+</body>
+</html>
