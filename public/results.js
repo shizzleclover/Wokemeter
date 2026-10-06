@@ -91,7 +91,7 @@ function renderResult(r, stats = null) {
       <div class="figures-grid">
         ${(r.relatedFigures || [r.historicalFigure || "Unknown"]).map(f => `
           <div class="figure-item">
-            <div class="figure-img placeholder" data-name="${escapeAttr(f)}"></div>
+            <div class="figure-img placeholder" data-name="${escapeHtml(f)}"></div>
             <span>${escapeHtml(f)}</span>
           </div>
         `).join("")}

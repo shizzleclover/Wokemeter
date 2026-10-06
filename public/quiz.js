@@ -1,11 +1,40 @@
-let qPool = [...window.QUESTIONS];
-const rankIndex = qPool.findIndex(q => q.id === "values_ranking");
-let rankQ = null;
-if (rankIndex !== -1) rankQ = qPool.splice(rankIndex, 1)[0];
-let selectedQuestions = shuffle(qPool).slice(0, 19);
-if (rankQ) selectedQuestions.unshift(rankQ);
 const answers = new Map();
 let current = 0;
+let selectedQuestions = [];
+
+function saveProgress() {
+  localStorage.setItem("wokeometer_progress", JSON.stringify({
+    selectedQuestions,
+    current,
+    answers: Array.from(answers.entries())
+  }));
+}
+
+function loadProgress() {
+  const saved = localStorage.getItem("wokeometer_progress");
+  if (saved) {
+    try {
+      const state = JSON.parse(saved);
+      if (state.selectedQuestions?.length) {
+        selectedQuestions = state.selectedQuestions;
+        current = state.current;
+        state.answers.forEach(([k, v]) => answers.set(k, v));
+        return true;
+      }
+    } catch(e) {}
+  }
+  return false;
+}
+
+if (!loadProgress()) {
+  let qPool = [...window.QUESTIONS];
+  const rankIndex = qPool.findIndex(q => q.id === "values_ranking");
+  let rankQ = null;
+  if (rankIndex !== -1) rankQ = qPool.splice(rankIndex, 1)[0];
+  selectedQuestions = shuffle(qPool).slice(0, 19);
+  if (rankQ) selectedQuestions.unshift(rankQ);
+  saveProgress();
+}
 
 const view = document.getElementById("question-view");
 const counter = document.getElementById("counter");
@@ -53,7 +82,7 @@ function render() {
         draggedItem = null;
         this.classList.remove("dragging");
         const newOrder = Array.from(list.querySelectorAll(".rank-item")).map(el => el.dataset.item);
-        answers.set(q.id, { question: q.text, type: q.type, version: q.version, answer: newOrder.join(" > ") });
+        answers.set(q.id, { question: q.text, type: q.type, version: q.version, answer: newOrder.join(" > ") }); saveProgress();
         updateNextState();
         render();
       });
@@ -93,19 +122,19 @@ function render() {
         draggedItem = null;
         this.classList.remove("dragging");
         const newOrder = Array.from(list.querySelectorAll(".rank-item")).map(el => el.dataset.item);
-        answers.set(q.id, { question: q.text, type: q.type, version: q.version, answer: newOrder.join(" > ") });
+        answers.set(q.id, { question: q.text, type: q.type, version: q.version, answer: newOrder.join(" > ") }); saveProgress();
         updateNextState();
         render();
       });
     });
     if (!answers.has(q.id)) {
-      answers.set(q.id, { question: q.text, type: q.type, version: q.version, answer: q.options.join(" > ") });
+      answers.set(q.id, { question: q.text, type: q.type, version: q.version, answer: q.options.join(" > ") }); saveProgress();
     }
   }
 
   view.querySelectorAll("input[name=answer]").forEach(input => {
     input.addEventListener("change", () => {
-      answers.set(q.id, { question: q.text, type: q.type, version: q.version, answer: input.value });
+      answers.set(q.id, { question: q.text, type: q.type, version: q.version, answer: input.value }); saveProgress();
       updateNextState();
       setTimeout(() => {
         if (!next.disabled) next.click();
@@ -116,7 +145,7 @@ function render() {
   const textarea = view.querySelector("textarea");
   if (textarea) {
     textarea.addEventListener("input", () => {
-      answers.set(q.id, { question: q.text, type: q.type, version: q.version, answer: textarea.value });
+      answers.set(q.id, { question: q.text, type: q.type, version: q.version, answer: textarea.value }); saveProgress();
       updateNextState();
     });
   }
@@ -198,19 +227,19 @@ next.addEventListener("click", () => {
   trackProgress(selectedQuestions[current].id);
 
   if (current < selectedQuestions.length - 1) {
-    current++;
+    current++; saveProgress();
     render();
     window.scrollTo({ top: 0, behavior: "smooth" });
   } else {
     const payload = selectedQuestions.map(q => answers.get(q.id));
     sessionStorage.setItem("wokeometerResponses", JSON.stringify(payload));
-    window.location.href = "/results.html";
+    localStorage.removeItem("wokeometer_progress"); window.location.href = "/results.html";
   }
 });
 
 back.addEventListener("click", () => {
   if (current === 0) return;
-  current--;
+  current--; saveProgress();
   render();
   window.scrollTo({ top: 0, behavior: "smooth" });
 });
