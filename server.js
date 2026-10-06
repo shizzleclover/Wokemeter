@@ -168,7 +168,7 @@ IMPORTANT INSTRUCTIONS FOR PERSONALIZATION:
 - Address the user directly as "you" or "your" in your summary, roast, and analysis.
 - When summarizing or roasting, directly quote or heavily paraphrase specific phrases from their essay answers to make it feel deeply personal.
 - Assign the user to the most fitting 'archetype' strictly from the allowed list.
-- In 'relatedFigures', provide exactly 5 real people across media, politics, history, or pop culture (e.g., Nelson Mandela, Mao Zedong, Joe Rogan, Taylor Swift, etc.) whose worldviews or public personas most closely align with the user's answers.
+- In 'relatedFigures', provide exactly 5 real people across media, politics, history, or pop culture (e.g., Nelson Mandela, Mao Zedong, Joe Rogan, Taylor Swift, etc.) whose worldviews or public personas most closely align with the user's answers. For each, provide their 'name' and a 1-sentence 'reason' explaining exactly why their worldview aligns with the user's specific answers.
 - Do not sanitize the analysis merely because the topic is controversial.
 - Do not praise, shame, persuade, or lecture the user.
 
@@ -200,7 +200,15 @@ const resultSchema = {
     },
     relatedFigures: { 
       type: "array",
-      items: { type: "string" },
+      items: {
+        type: "object",
+        additionalProperties: false,
+        properties: {
+          name: { type: "string" },
+          reason: { type: "string" }
+        },
+        required: ["name", "reason"]
+      },
       minItems: 5,
       maxItems: 5
     },

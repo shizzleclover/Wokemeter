@@ -815,3 +815,78 @@ a { color: inherit; text-decoration: none; }
   color: var(--muted);
   font-weight: 800;
 }
+
+/* Accordion Styles */
+.figures-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+.accordion-item {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.2s;
+}
+
+.accordion-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  color: var(--fg);
+}
+
+.accordion-header span {
+  flex: 1;
+  font-size: 16px;
+  font-weight: 600;
+  margin-left: 16px;
+}
+
+.chevron {
+  transition: transform 0.3s;
+}
+
+.accordion-item.active .chevron {
+  transform: rotate(180deg);
+}
+
+.accordion-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out, padding 0.3s ease;
+  padding: 0 16px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.accordion-item.active .accordion-body {
+  max-height: 200px;
+  padding: 0 16px 16px 16px;
+}
+
+.accordion-header .figure-img {
+  width: 48px;
+  height: 48px;
+  border-width: 2px;
+}
+
+/* Image Background Blending */
+.archetype-img {
+  mix-blend-mode: multiply;
+  background-color: transparent;
+}
+
+.figure-img {
+  background-color: var(--card);
+}

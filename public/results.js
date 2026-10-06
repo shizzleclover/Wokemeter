@@ -75,8 +75,15 @@ function renderResult(r, stats = null) {
       
       <div class="gauge-container">
         <svg viewBox="0 0 100 55" class="gauge">
+          <defs>
+            <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#22c55e" />
+              <stop offset="50%" stop-color="#eab308" />
+              <stop offset="100%" stop-color="#e63946" />
+            </linearGradient>
+          </defs>
           <path class="gauge-bg" d="M 10 50 A 40 40 0 0 1 90 50" fill="none" stroke="var(--border)" stroke-width="12" stroke-linecap="round"/>
-          <path class="gauge-fill" d="M 10 50 A 40 40 0 0 1 90 50" fill="none" stroke="var(--accent)" stroke-width="12" stroke-linecap="round" stroke-dasharray="126" stroke-dashoffset="126"/>
+          <path class="gauge-fill" d="M 10 50 A 40 40 0 0 1 90 50" fill="none" stroke="url(#gaugeGradient)" stroke-width="12" stroke-linecap="round" stroke-dasharray="126" stroke-dashoffset="126"/>
         </svg>
         <div class="gauge-score"><span id="anim-score">0</span><span style="font-size: 0.5em">%</span></div>
       </div>
@@ -88,14 +95,25 @@ function renderResult(r, stats = null) {
       <h1>${escapeHtml(r.archetype)}</h1>
       
       <p class="historical-figure">You relate most with:</p>
-      <div class="figures-grid">
-        ${(r.relatedFigures || [r.historicalFigure || "Unknown"]).map(f => `
-          <div class="figure-item">
-            <div class="figure-img placeholder" data-name="${escapeHtml(f)}"></div>
-            <span>${escapeHtml(f)}</span>
+      <div class="figures-accordion">
+        ${(r.relatedFigures || []).map(f => {
+          const name = typeof f === 'string' ? f : f.name;
+          const reason = typeof f === 'string' ? "You share similar overarching ideological principles." : f.reason;
+          return `
+          <div class="accordion-item">
+            <button class="accordion-header" onclick="this.parentElement.classList.toggle('active')">
+              <div class="figure-img placeholder" data-name="${escapeHtml(name)}"></div>
+              <span>${escapeHtml(name)}</span>
+              <svg class="chevron" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M7 10l5 5 5-5z"/></svg>
+            </button>
+            <div class="accordion-body">
+              <p>${escapeHtml(reason)}</p>
+            </div>
           </div>
-        `).join("")}
+          `;
+        }).join("")}
       </div>
+
 
       <p class="headline">${escapeHtml(r.headline)}</p>
       <p class="summary">${escapeHtml(r.summary)}</p>
