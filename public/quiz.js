@@ -146,8 +146,6 @@ function render() {
       }
     });
   });
-    });
-  });
 
   const textarea = view.querySelector("#explanation");
   if (textarea) {
@@ -183,9 +181,7 @@ function renderChoices(q, saved) {
     </div>
   `;
 }
-    </div>
-  `;
-}
+
 
 function renderRank(q, saved) {
   const items = saved?.answer ? saved.answer.split(" > ") : q.options;
@@ -208,20 +204,8 @@ function updateNextState() {
   next.disabled = !answers.has(q.id);
   next.style.display = "";
 }
-  } else {
-    next.disabled = !answers.has(q.id);
-  }
-  
-  if (q.type === "choice") {
-    next.style.display = "none";
-  } else {
-    next.style.display = "";
-  }
 
-  const count = view.querySelector("#char-count");
-  const textarea = view.querySelector("textarea");
-  if (count && textarea) count.textContent = `${textarea.value.length}/3000`;
-}
+
 
 next.addEventListener("click", () => {
   if (!answers.has(selectedQuestions[current].id)) return;
