@@ -379,6 +379,10 @@ const server = http.createServer(async (req, res) => {
     if (req.method === "GET") {
       const parsedUrl = new URL(req.url, `http://${req.headers.host}`);
       
+      if (parsedUrl.pathname === "/api/health") {
+        return json(res, 200, { status: "ok", uptime: process.uptime() });
+      }
+      
       if (parsedUrl.pathname === "/api/result") {
         const id = parsedUrl.searchParams.get("id");
         if (!id || !db) return json(res, 404, { error: "Not found" });

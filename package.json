@@ -4,7 +4,7 @@
   "private": true,
   "description": "Wokeometer — an AI-powered controversial opinion quiz.",
   "scripts": {
-    "start": "node --watch --env-file=.env server.js",
+    "start": "node server.js",
     "dev": "node --watch --env-file=.env server.js"
   },
   "dependencies": {
