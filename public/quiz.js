@@ -44,6 +44,7 @@ function render() {
     let draggedItem = null;
     const list = view.querySelector("#rank-list");
     list.querySelectorAll(".rank-item").forEach(item => {
+      // Desktop Drag & Drop
       item.addEventListener("dragstart", function() {
         draggedItem = this;
         setTimeout(() => this.classList.add("dragging"), 0);
@@ -54,7 +55,7 @@ function render() {
         const newOrder = Array.from(list.querySelectorAll(".rank-item")).map(el => el.dataset.item);
         answers.set(q.id, { question: q.text, type: q.type, version: q.version, answer: newOrder.join(" > ") });
         updateNextState();
-        render(); // re-render to update index numbers
+        render();
       });
       item.addEventListener("dragover", function(e) {
         e.preventDefault();
@@ -63,6 +64,38 @@ function render() {
         const offset = bounding.y + (bounding.height / 2);
         if (e.clientY - offset > 0) this.after(draggedItem);
         else this.before(draggedItem);
+      });
+
+      // Mobile Touch Support
+      item.addEventListener("touchstart", function(e) {
+        draggedItem = this;
+        setTimeout(() => this.classList.add("dragging"), 0);
+      }, { passive: true });
+      
+      item.addEventListener("touchmove", function(e) {
+        if (!draggedItem) return;
+        e.preventDefault(); // Prevent scrolling while dragging
+        const touch = e.touches[0];
+        const target = document.elementFromPoint(touch.clientX, touch.clientY);
+        if (target) {
+          const rankItem = target.closest(".rank-item");
+          if (rankItem && rankItem !== draggedItem) {
+            const bounding = rankItem.getBoundingClientRect();
+            const offset = bounding.y + (bounding.height / 2);
+            if (touch.clientY - offset > 0) rankItem.after(draggedItem);
+            else rankItem.before(draggedItem);
+          }
+        }
+      }, { passive: false });
+
+      item.addEventListener("touchend", function() {
+        if (!draggedItem) return;
+        draggedItem = null;
+        this.classList.remove("dragging");
+        const newOrder = Array.from(list.querySelectorAll(".rank-item")).map(el => el.dataset.item);
+        answers.set(q.id, { question: q.text, type: q.type, version: q.version, answer: newOrder.join(" > ") });
+        updateNextState();
+        render();
       });
     });
     if (!answers.has(q.id)) {
